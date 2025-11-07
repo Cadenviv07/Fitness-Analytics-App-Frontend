@@ -11,7 +11,7 @@ export default function SignupPage(){
 
           alert("Account created succsesfully");
           window.location.href = "/verify";
-        }catch{
+        }catch(error){
           console.error("Signup failed:", error.response?.data || error.message);
           alert("Signup failed. Please try again.");
         }

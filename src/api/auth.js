@@ -15,7 +15,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-export const signup = async (data) =>{
+export const register = async (data) =>{
     return axios.post(`${API_URL}/register`, data);
 };
 

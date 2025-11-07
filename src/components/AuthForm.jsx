@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 
 function AuthForm({type, onSubmit}){
+    const[username, setUsername] = useState("");
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        onSubmit({ email, password });
+        onSubmit({ username, email, password });
     };
 
     return (
@@ -14,13 +15,23 @@ function AuthForm({type, onSubmit}){
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 max-w-sm mx-auto mt-10"
         >
+       
         <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border p-2 rounded"
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        className="border border-gray-300 rounded-md px-4 py-2 mb-4 w-64"
         />
+           
+        <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="border p-2 rounded"
+        />
+
         <input
         type = "password"
         placeholder = "Password"
