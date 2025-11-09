@@ -1,16 +1,17 @@
 import AuthForm from "../components/AuthForm";
+import { login } from "../api/auth";
 
 export default function LoginPage(){
-    const handleLogin =  async ({email, password}) => {
-      console.log("Logging in:", email, password);
+    const handleLogin =  async ({username, email, password}) => {
+      console.log("Logging in:", username, email, password);
       try{
-          const response = await login({email, password});
+          const response = await login({username, email, password});
           const token = response.data;
 
           localStorage.setItem("Token", token);
           console.log("Signup Succsesful: ", token);
       
-        }catch{
+        }catch(error){
           console.error("Login failed:", error.response?.data || error.message);
           alert("Login failed. Please try again.");
         }

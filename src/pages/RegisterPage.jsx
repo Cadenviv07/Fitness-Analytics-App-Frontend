@@ -2,9 +2,9 @@ import AuthForm from "../components/AuthForm";
 import { register } from "../api/auth";
 
 export default function SignupPage(){
-      const handleRegister = async ({ email, password }) => {
+      const handleRegister = async ({ username, email, password }) => {
         try{
-          const response = await register({email, password});
+          const response = await register({username, email, password});
           console.log("Signup Succsesful: ", response.data);
 
           localStorage.setItem("email", email);

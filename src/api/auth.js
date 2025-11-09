@@ -27,8 +27,9 @@ export const sendVerificationEmail = async (email) => {
   return axios.post(`${API_URL}/sendVerification`, { email });
 };
 
-export const login = async (email) => {
-  return axios.post(`${API_URL}/login`, { email });
+export const login = async (data) => {
+  return axios.post(`${API_URL}/login`, data);
 };
+
 
 
