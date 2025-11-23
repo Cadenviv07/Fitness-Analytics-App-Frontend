@@ -20,27 +20,20 @@ export default function DashboardPage() {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-semibold mb-6">Workout Dashboard</h1>
+      <h1 className="text-2xl font-semibold mb-6">Workouts</h1>
 
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={workouts}>
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Bar dataKey="weight" fill="#3b82f6" />
-        </BarChart>
-      </ResponsiveContainer>
+      <ul className="space-y-4">
+        {workouts.map((w) => (
+          <li key={w.id} className="p-4 bg-gray-100 rounded-lg">
+            <h2 className="text-xl font-bold">{w.name}</h2>
 
-      <div className="mt-6">
-        <h2 className="text-lg font-semibold mb-2">All Workouts</h2>
-        <ul className="space-y-2">
-          {workouts.map((w) => (
-            <li key={w.id} className="p-3 bg-gray-100 rounded-md">
-              {w.date}: {w.name} — {w.sets}×{w.reps} @ {w.weight}kg
-            </li>
-          ))}
-        </ul>
-      </div>
+            {/* Muscle groups */}
+            <p className="text-gray-700 mt-1">
+              {w.muscleTargets.join(", ")}
+            </p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
