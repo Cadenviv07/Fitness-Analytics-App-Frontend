@@ -11,7 +11,7 @@ export default function LoginPage(){
           localStorage.setItem("Token", token);
           console.log("Signup Succsesful: ", token);
 
-          window.location.href = "/dashboard";
+          window.location.href = "/";
 
         }catch(error){
           console.error("Login failed:", error.response?.data || error.message);

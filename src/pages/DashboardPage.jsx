@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 
 export default function DashboardPage() {
   const [workouts, setWorkouts] = useState([]);
+  const[newWorkout, setNewWorkout] = useState({ workout: "", date: "" })
   const email = localStorage.getItem("email");
-
-  useEffect(() => {
-    const fetchWorkouts = async () => {
+  
+  const fetchWorkouts = async () => {
       try {
         const res = await axios.get(`http://localhost:8080/api/workouts/${email}`);
         setWorkouts(res.data);
@@ -17,26 +17,69 @@ export default function DashboardPage() {
       }
     };
     fetchWorkouts();
+    
+  useEffect(() => {
   }, [email]);
-  Return(
-    <div className="p-8">
-        <h1 className="text-2xl font-semibold mb-6">Workouts</h1>
 
-        <ul className="space-y-4">
-          {workouts.map((w) => (
-            <li key={w.id}>
-              <Link
-                to={`/workout/${w.id}`}
-                className="block p-4 bg-gray-100 rounded-lg hover:bg-gray-200"
-              >
-                <h2 className="text-xl font-bold">{w.name}</h2>
-                <p className="text-gray-700 mt-1">
-                  {w.muscleGroups.join(", ")}
-                </p>
-              </Link>
-            </li>
-          ))}
-        </ul>
+  const handleChange = (e) => {
+    setNewWorkout({ ...newWorkout, [e.target.name]: e.target.value });
+  };
+
+  const handleCreateWorkout = async(e) => {
+    e.preventDefault();
+    try{
+      await axios.post("http://localhost:8080/api/workouts", newWorkout);
+      alert("Workout created succsessfully!");
+      setNewWorkout({workout: "" , date: ""});
+      fetchWorkouts();
+    }catch(err){
+      console.error("Error creating workout:", err);
+    }
+  };
+
+  return (
+    <div className="p-8">
+      {/* CREATE WORKOUT FORM SECTION */}
+      <div className="mb-10 p-6 bg-white border rounded-xl shadow-sm">
+        <h2 className="text-xl font-bold mb-4">Create New Workout</h2>
+        <form onSubmit={handleCreateWorkout} className="flex flex-col gap-4 max-w-md">
+          <input
+            type="text"
+            name="workout" 
+            placeholder="Workout Name (e.g. Leg Day)"
+            value={newWorkout.workout}
+            onChange={handleChange}
+            className="p-2 border rounded"
+            required
+          />
+          <input
+            type="date"
+            name="date" 
+            value={newWorkout.date}
+            onChange={handleChange}
+            className="p-2 border rounded"
+            required
+          />
+          <button type="submit" className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
+            Add Workout
+          </button>
+        </form>
       </div>
+
+      {/* WORKOUT LIST SECTION */}
+      <h1 className="text-2xl font-semibold mb-6">Your Workouts</h1>
+      <ul className="space-y-4">
+        {workouts?.map((w) => (
+          <li key={w.id}>
+            <Link to={`/workout/${w.id}`} className="block p-4 bg-gray-100 rounded-lg hover:bg-gray-200">
+              <h2 className="text-xl font-bold">{w.workout}</h2>
+              <p className="text-gray-700 mt-1">
+                {w.muscleGroups?.join(", ") || "No muscle groups set"}
+              </p>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
