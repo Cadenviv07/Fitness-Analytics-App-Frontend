@@ -7,10 +7,18 @@ export default function DashboardPage() {
   const [workouts, setWorkouts] = useState([]);
   const[newWorkout, setNewWorkout] = useState({ workout: "", date: "" })
   const email = localStorage.getItem("email");
+
+  const token = localStorage.getItem("token");
   
   const fetchWorkouts = async () => {
-      try {
-        const res = await axios.get(`http://localhost:8080/api/workouts/${email}`);
+
+    if(!token) return;
+    try {
+        const res = await axios.get(`http://localhost:8080/api/workouts/${email}`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         setWorkouts(res.data);
       } catch (err) {
         console.error("Failed to fetch workouts:", err);
@@ -28,7 +36,11 @@ export default function DashboardPage() {
   const handleCreateWorkout = async(e) => {
     e.preventDefault();
     try{
-      await axios.post("http://localhost:8080/api/workouts", newWorkout);
+      await axios.post("http://localhost:8080/api/workouts", newWorkout, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       alert("Workout created succsessfully!");
       setNewWorkout({workout: "" , date: ""});
       fetchWorkouts();
