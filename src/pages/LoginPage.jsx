@@ -7,8 +7,7 @@ export default function LoginPage(){
       try{
           const response = await login({username, email, password});
           const token = response.data;
-
-          localStorage.setItem("Token", token);
+          localStorage.setItem("token", token);
           console.log("Signup Succsesful: ", token);
 
           window.location.href = "/";

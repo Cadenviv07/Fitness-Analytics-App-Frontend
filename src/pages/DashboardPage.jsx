@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export default function DashboardPage() {
@@ -9,12 +9,14 @@ export default function DashboardPage() {
   const email = localStorage.getItem("email");
 
   const token = localStorage.getItem("token");
+
+  const navigate = useNavigate();
   
   const fetchWorkouts = async () => {
 
     if(!token) return;
     try {
-        const res = await axios.get(`http://localhost:8080/api/workouts/${email}`, {
+        const res = await axios.get(`http://localhost:8080/api/workouts`, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -24,9 +26,13 @@ export default function DashboardPage() {
         console.error("Failed to fetch workouts:", err);
       }
     };
-    fetchWorkouts();
     
   useEffect(() => {
+    if (!localStorage.getItem("token")) {
+      navigate("/login");
+    } else {
+      fetchWorkouts();
+    }
   }, [email]);
 
   const handleChange = (e) => {
@@ -36,6 +42,7 @@ export default function DashboardPage() {
   const handleCreateWorkout = async(e) => {
     e.preventDefault();
     try{
+      console.log("Token being sent:", localStorage.getItem("token"));
       await axios.post("http://localhost:8080/api/workouts", newWorkout, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -49,7 +56,25 @@ export default function DashboardPage() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+
+    navigate("/login")
+  }
+
   return (
+    <>
+    <nav className="p-4 bg-blue-600 text-white flex justify-between">
+      <h1>FullStacked</h1>
+      <button 
+        onClick={handleLogout} 
+        className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded"
+      >
+        Logout
+      </button>
+    </nav>
+
     <div className="p-8">
       {/* CREATE WORKOUT FORM SECTION */}
       <div className="mb-10 p-6 bg-white border rounded-xl shadow-sm">
@@ -93,5 +118,6 @@ export default function DashboardPage() {
         ))}
       </ul>
     </div>
+    </>
   );
 }
