@@ -6,6 +6,9 @@ import VerifyPage from "./pages/VerifyPage";
 import DashboardPage from "./pages/DashboardPage";
 import WorkoutPage from "./pages/WorkoutPage";
 import ExercisePage from "./pages/ExercisePage";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
 function App() {
 
@@ -35,16 +38,14 @@ function App() {
     }, [navigate]);
 
     return (
-        <Router>
-            <Routes>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage/>} />
-                <Route path="/verify" element={<VerifyPage/>} />
-                <Route path = "/" element={<DashboardPage />} />
-                <Route path = "/workout:id" element={<WorkoutPage />} />
-                <Route path = "/exercise:id" element={<ExercisePage />} />
-            </Routes>
-        </Router>
+        <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage/>} />
+            <Route path="/verify" element={<VerifyPage/>} />
+            <Route path = "/" element={<DashboardPage />} />
+            <Route path = "/workout:id" element={<WorkoutPage />} />
+            <Route path = "/exercise:id" element={<ExercisePage />} />
+        </Routes>
     );
 }
 

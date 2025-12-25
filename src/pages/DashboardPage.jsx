@@ -41,6 +41,12 @@ export default function DashboardPage() {
 
   const handleCreateWorkout = async(e) => {
     e.preventDefault();
+
+    if (!newWorkout.date) {
+        alert("Please select a date!");
+        return;
+    }
+    
     try{
       console.log("Token being sent:", localStorage.getItem("token"));
       await axios.post("http://localhost:8080/api/workouts", newWorkout, {
