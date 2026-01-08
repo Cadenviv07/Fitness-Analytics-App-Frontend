@@ -225,7 +225,7 @@ function WorkoutPage() {
                     {/* Exercise Header */}
                     <div className="bg-gray-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
                         <div>
-                            <h3 className="text-xl font-bold text-gray-800">{exercise.name}</h3>
+                            <h3 className="text-xl font-bold text-gray-800">{exercise.exercise}</h3>
                             {/* Shows Muscle Group if backend filled it in */}
                             {exercise.muscleGroup && (
                                 <span className="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-1 rounded mt-1 inline-block">

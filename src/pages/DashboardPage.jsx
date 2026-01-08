@@ -39,6 +39,28 @@ export default function DashboardPage() {
     setNewWorkout({ ...newWorkout, [e.target.name]: e.target.value });
   };
 
+  const handleDeleteWorkout = async(e) => {
+    if (!window.confirm("Are you sure you want to delete this workout?")) return;
+
+    try{
+      const response = await fetch(`http://localhost:8080/api/workouts/${workoutId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
+
+      if (response.ok) {
+          setWorkouts(prevWorkouts => prevWorkouts.filter(w => w.id !== workoutId));
+        } else {
+          alert("Failed to delete workout.");
+      }
+
+    }catch(err){
+      console.log("Error Deleting workout:", err)
+    }
+  }
+
   const handleCreateWorkout = async(e) => {
     e.preventDefault();
 
