@@ -46,7 +46,7 @@ export default function DashboardPage() {
         alert("Please select a date!");
         return;
     }
-    
+
     try{
       console.log("Token being sent:", localStorage.getItem("token"));
       await axios.post("http://localhost:8080/api/workouts", newWorkout, {

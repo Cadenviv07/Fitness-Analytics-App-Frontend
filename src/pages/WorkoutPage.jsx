@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import axios from 'axios';
 
 function WorkoutPage() {
   const { id } = useParams();
@@ -10,17 +11,25 @@ function WorkoutPage() {
   const [error, setError] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [exerciseName, setExerciseName] = useState("");
-  const [sets, setSets] = useState([{ weight: "", reps: "" }]);
+  const [sets, setSets] = useState([{ weight: "", reps: "" , }]);
 
-
+  
   useEffect(() => {
+
+    const token = localStorage.getItem("token")
   
     setIsLoading(true);
     setError(null);
     setWorkout(null);
     setExercises([]);
 
-    fetch(`http://localhost:8080/api/workouts/${id}`)
+    fetch(`http://localhost:8080/api/workouts/${id}`,{
+        method: "GET",
+        headers:{
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+        }
+    })
       .then((res) => {
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
@@ -62,7 +71,7 @@ function WorkoutPage() {
         
        
         const payload = {
-            name: exerciseName,
+            exercise: exerciseName,
             sets: sets 
         };
 
@@ -94,7 +103,7 @@ function WorkoutPage() {
   return (
     <div className="p-8 max-w-4xl mx-auto">
       
-      {/* HEADER SECTION */}
+
       <div className="flex justify-between items-center mb-6 border-b pb-4">
         <div>
             <h1 className="text-3xl font-bold text-gray-800">{workout.name || "Workout Details"}</h1>
@@ -103,7 +112,7 @@ function WorkoutPage() {
             </p>
         </div>
         
-        {/* OPEN MODAL BUTTON */}
+       
         <button 
             onClick={() => setShowAddForm(true)}
             className="bg-indigo-600 text-white px-5 py-2 rounded-lg hover:bg-indigo-700 transition shadow-md font-semibold"
@@ -112,7 +121,7 @@ function WorkoutPage() {
         </button>
       </div>
 
-      {/* --- ADD EXERCISE MODAL --- */}
+    
       {showAddForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
@@ -133,7 +142,6 @@ function WorkoutPage() {
                             />
                         </div>
 
-                        {/* DYNAMIC SETS SECTION */}
                         <div className="mb-6">
                             <label className="block text-sm font-bold text-gray-700 mb-2">Sets</label>
                             <div className="space-y-3">
@@ -159,7 +167,7 @@ function WorkoutPage() {
                                             required
                                         />
 
-                                        {/* REMOVE BUTTON (Only show if >1 set) */}
+                                       
                                         {sets.length > 1 && (
                                             <button 
                                                 type="button" 
@@ -183,7 +191,7 @@ function WorkoutPage() {
                             </button>
                         </div>
                         
-                        {/* FORM ACTIONS */}
+                      
                         <div className="flex justify-end gap-3 pt-4 border-t">
                             <button 
                                 type="button" 
@@ -205,7 +213,6 @@ function WorkoutPage() {
         </div>
       )}
 
-      {/* --- EXERCISE LIST DISPLAY --- */}
       <div className="space-y-6">
         {exercises.length === 0 ? (
             <div className="text-center py-12 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">

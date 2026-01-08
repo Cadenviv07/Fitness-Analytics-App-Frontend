@@ -43,8 +43,8 @@ function App() {
             <Route path="/register" element={<RegisterPage/>} />
             <Route path="/verify" element={<VerifyPage/>} />
             <Route path = "/" element={<DashboardPage />} />
-            <Route path = "/workout:id" element={<WorkoutPage />} />
-            <Route path = "/exercise:id" element={<ExercisePage />} />
+            <Route path = "/workout/:id" element={<WorkoutPage />} />
+            <Route path = "/exercise/:id" element={<ExercisePage />} />
         </Routes>
     );
 }
